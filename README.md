@@ -1,11 +1,11 @@
-## Sparse R-CNN: End-to-End Object Detection with Learnable Proposals
+## MABC-Net: Automic Rectal Tumor Segmentation from MRI Scans
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ![](readme/fig.jpeg)
 
 ## Paper
-[Sparse R-CNN: End-to-End Object Detection with Learnable Proposals](https://arxiv.org/abs/2011.12450)
+[MABC-Net: Automic Rectal Tumor Segmentation from MRI Scans](https://arxiv.org/abs/2011.12450)
 
 ## Updates
 - (02/12/2020) Models and logs(R101_100pro_3x and R101_300pro_3x) are available. 
