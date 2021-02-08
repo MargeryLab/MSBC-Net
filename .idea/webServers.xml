@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="4e71d107-adb8-49c6-a807-420147dd3e2d" name="lab209-1">
+        <fileTransfer rootFolder="/home/lab209-1" accessType="SFTP" host="lab.morooi.cn" port="7001" sshConfigId="41d4e918-fb9c-4380-b5f2-ae91747da3ed" sshConfig="lab209-1@lab.morooi.cn:7001 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

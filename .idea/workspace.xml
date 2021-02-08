@@ -1,0 +1,529 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BranchesTreeState">
+    <expand />
+    <select>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </select>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="67242912-bdbf-4c34-a8a8-014e7af37dc6" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1nuqhAaGn8n8w35KdJtNa1LOJv5" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="true" />
+    <property name="WebServerToolWindowPanel.toolwindow.highlight.mappings" value="true" />
+    <property name="WebServerToolWindowPanel.toolwindow.highlight.symlinks" value="true" />
+    <property name="WebServerToolWindowPanel.toolwindow.show.date" value="false" />
+    <property name="WebServerToolWindowPanel.toolwindow.show.permissions" value="false" />
+    <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/projects/MSBC-Net/msbcnet/util" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="vcs.Git" />
+  </component>
+  <component name="PyDebuggerOptionsProvider">
+    <option name="mySupportGeventDebugging" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/projects/MSBC-Net/msbcnet/util" />
+      <recent name="$PROJECT_DIR$/test" />
+      <recent name="$PROJECT_DIR$/datasets/rectalTumor/annotations" />
+      <recent name="$PROJECT_DIR$/projects/MSBC-Net" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/datasets/rectalTumor/annotations" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python.train_rectal">
+    <configuration name="computeDice" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="MSBC-Net" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/projects/MSBC-Net/msbcnet/util" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/projects/MSBC-Net/msbcnet/util/computeDice.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="plot_utils" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="MSBC-Net" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/projects/MSBC-Net/msbcnet/util" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/projects/MSBC-Net/msbcnet/util/plot_utils.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="train_rectal" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="MSBC-Net" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/projects/MSBC-Net" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/projects/MSBC-Net/train_rectal.py" />
+      <option name="PARAMETERS" value="--config-file configs/msbcnet.res50.100pro.3x.yaml --num-gpus 1" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="visualize" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="MSBC-Net" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/projects/MSBC-Net" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/projects/MSBC-Net/visualize.py" />
+      <option name="PARAMETERS" value="--config-file configs/msbcnet.res50.100pro.3x.yaml --input ../../datasets/rectalTumor/rectal_tumor_val/1000456-08.png --output output/predVis/1000456-08.png --confidence-threshold 0.4 --opts MODEL.WEIGHTS output/model_0079999.pth" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="visualizer" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="MSBC-Net" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/detectron2/utils" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/detectron2/utils/visualizer.py" />
+      <option name="PARAMETERS" value="--config-file configs/msbcnet.res50.100pro.3x.yaml --input ../../datasets/rectalTumor/rectal_tumor_val/1000001-13.png --output output/predVis/1000001-13.png --confidence-threshold 0.4 --opts MODEL.WEIGHTS output/model_0014999.pth" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Python.train_rectal" />
+      <item itemvalue="Python.visualize" />
+      <item itemvalue="Python.computeDice" />
+      <item itemvalue="Python.visualizer" />
+      <item itemvalue="Python.plot_utils" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.train_rectal" />
+        <item itemvalue="Python.computeDice" />
+        <item itemvalue="Python.plot_utils" />
+        <item itemvalue="Python.visualize" />
+        <item itemvalue="Python.visualizer" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration>$PROJECT_DIR$/../.subversion</configuration>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="67242912-bdbf-4c34-a8a8-014e7af37dc6" name="Default Changelist" comment="" />
+      <created>1612250439865</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1612250439865</updated>
+      <workItem from="1612250441532" duration="4000" />
+      <workItem from="1612250491210" duration="23000" />
+      <workItem from="1612250528942" duration="15534000" />
+      <workItem from="1612331111977" duration="93000" />
+      <workItem from="1612331238227" duration="599000" />
+      <workItem from="1612332930222" duration="457000" />
+      <workItem from="1612333847801" duration="8592000" />
+      <workItem from="1612348919895" duration="6162000" />
+      <workItem from="1612421744783" duration="599000" />
+      <workItem from="1612422722590" duration="314000" />
+      <workItem from="1612423321989" duration="13937000" />
+      <workItem from="1612503611853" duration="4379000" />
+      <workItem from="1612509355302" duration="13731000" />
+      <workItem from="1612595049888" duration="17888000" />
+      <workItem from="1612618693534" duration="24878000" />
+      <workItem from="1612751775884" duration="7105000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="2" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="588" y="214" width="800" height="677" key="#Deployment" timestamp="1612503642935">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state x="588" y="214" width="800" height="677" key="#Deployment/67.27.1853.1053@67.27.1853.1053" timestamp="1612503642935" />
+    <state x="567" y="201" width="832" height="704" key="#SSH_Configurations" timestamp="1612272150697">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state x="567" y="201" width="832" height="704" key="#SSH_Configurations/67.27.1853.1053@67.27.1853.1053" timestamp="1612272150697" />
+    <state x="467" y="279" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1612709062173">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state x="467" y="279" key="#com.intellij.execution.impl.EditConfigurationsDialog/67.27.1853.1053@67.27.1853.1053" timestamp="1612709062173" />
+    <state x="555" y="345" width="867" height="414" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1612431046552">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state x="555" y="345" width="867" height="414" key="#com.intellij.fileTypes.FileTypeChooser/67.27.1853.1053@67.27.1853.1053" timestamp="1612431046552" />
+    <state x="578" y="237" width="820" height="630" key="#xdebugger.XInspectDialog" timestamp="1612700784895">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state x="578" y="237" width="820" height="630" key="#xdebugger.XInspectDialog/67.27.1853.1053@67.27.1853.1053" timestamp="1612700784895" />
+    <state x="751" y="288" key="#xdebugger.evaluate" timestamp="1612688603233">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state x="751" y="288" key="#xdebugger.evaluate/67.27.1853.1053@67.27.1853.1053" timestamp="1612688603233" />
+    <state x="448" y="104" width="1081" height="897" key="CommitChangelistDialog2" timestamp="1612254257027">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state x="448" y="104" width="1081" height="897" key="CommitChangelistDialog2/67.27.1853.1053@67.27.1853.1053" timestamp="1612254257027" />
+    <state width="1583" height="608" key="DebuggerActiveHint" timestamp="1612753771245">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state width="1583" height="608" key="DebuggerActiveHint/67.27.1853.1053@67.27.1853.1053" timestamp="1612753771245" />
+    <state x="243" y="116" width="1478" height="872" key="DiffContextDialog" timestamp="1612505873728">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state x="243" y="116" width="1478" height="872" key="DiffContextDialog/67.27.1853.1053@67.27.1853.1053" timestamp="1612505873728" />
+    <state x="201" y="107" width="1653" height="855" key="DirDiffDialog" timestamp="1612504114171">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state x="201" y="107" width="1653" height="855" key="DirDiffDialog/67.27.1853.1053@67.27.1853.1053" timestamp="1612504114171" />
+    <state x="776" y="310" width="424" height="484" key="FileChooserDialogImpl" timestamp="1612761468424">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state x="776" y="310" width="424" height="484" key="FileChooserDialogImpl/67.27.1853.1053@67.27.1853.1053" timestamp="1612761468424" />
+    <state x="1235" y="476" key="Github.ShareDialog" timestamp="1612762330607">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state x="1235" y="476" key="Github.ShareDialog/67.27.1853.1053@67.27.1853.1053" timestamp="1612762330607" />
+    <state x="1245" y="182" width="412" height="740" key="Github.UntrackedFilesDialog" timestamp="1612762428572">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state x="1245" y="182" width="412" height="740" key="Github.UntrackedFilesDialog/67.27.1853.1053@67.27.1853.1053" timestamp="1612762428572" />
+    <state width="1799" height="388" key="GridCell.Tab.-1.bottom" timestamp="1612618133368">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state width="1799" height="388" key="GridCell.Tab.-1.bottom/67.27.1853.1053@67.27.1853.1053" timestamp="1612618133368" />
+    <state width="1799" height="388" key="GridCell.Tab.-1.center" timestamp="1612618133368">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state width="1799" height="388" key="GridCell.Tab.-1.center/67.27.1853.1053@67.27.1853.1053" timestamp="1612618133368" />
+    <state width="1799" height="388" key="GridCell.Tab.-1.left" timestamp="1612618133367">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state width="1799" height="388" key="GridCell.Tab.-1.left/67.27.1853.1053@67.27.1853.1053" timestamp="1612618133367" />
+    <state width="1799" height="388" key="GridCell.Tab.-1.right" timestamp="1612618133368">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state width="1799" height="388" key="GridCell.Tab.-1.right/67.27.1853.1053@67.27.1853.1053" timestamp="1612618133368" />
+    <state width="873" height="338" key="GridCell.Tab.0.bottom" timestamp="1612760104404">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state width="873" height="338" key="GridCell.Tab.0.bottom/67.27.1853.1053@67.27.1853.1053" timestamp="1612760104404" />
+    <state width="873" height="338" key="GridCell.Tab.0.center" timestamp="1612760104404">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state width="873" height="338" key="GridCell.Tab.0.center/67.27.1853.1053@67.27.1853.1053" timestamp="1612760104404" />
+    <state width="873" height="338" key="GridCell.Tab.0.left" timestamp="1612760104403">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state width="873" height="338" key="GridCell.Tab.0.left/67.27.1853.1053@67.27.1853.1053" timestamp="1612760104403" />
+    <state width="873" height="338" key="GridCell.Tab.0.right" timestamp="1612760104404">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state width="873" height="338" key="GridCell.Tab.0.right/67.27.1853.1053@67.27.1853.1053" timestamp="1612760104404" />
+    <state width="1799" height="372" key="GridCell.Tab.1.bottom" timestamp="1612754112108">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state width="1799" height="372" key="GridCell.Tab.1.bottom/67.27.1853.1053@67.27.1853.1053" timestamp="1612754112108" />
+    <state width="1799" height="372" key="GridCell.Tab.1.center" timestamp="1612754112108">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state width="1799" height="372" key="GridCell.Tab.1.center/67.27.1853.1053@67.27.1853.1053" timestamp="1612754112108" />
+    <state width="1799" height="372" key="GridCell.Tab.1.left" timestamp="1612754112108">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state width="1799" height="372" key="GridCell.Tab.1.left/67.27.1853.1053@67.27.1853.1053" timestamp="1612754112108" />
+    <state width="1799" height="372" key="GridCell.Tab.1.right" timestamp="1612754112108">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state width="1799" height="372" key="GridCell.Tab.1.right/67.27.1853.1053@67.27.1853.1053" timestamp="1612754112108" />
+    <state width="1770" height="360" key="GridCell.Tab.2.bottom" timestamp="1612618166010">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state width="1770" height="360" key="GridCell.Tab.2.bottom/67.27.1853.1053@67.27.1853.1053" timestamp="1612618166010" />
+    <state width="1770" height="360" key="GridCell.Tab.2.center" timestamp="1612618166009">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state width="1770" height="360" key="GridCell.Tab.2.center/67.27.1853.1053@67.27.1853.1053" timestamp="1612618166009" />
+    <state width="1770" height="360" key="GridCell.Tab.2.left" timestamp="1612618166008">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state width="1770" height="360" key="GridCell.Tab.2.left/67.27.1853.1053@67.27.1853.1053" timestamp="1612618166008" />
+    <state width="1770" height="360" key="GridCell.Tab.2.right" timestamp="1612618166009">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state width="1770" height="360" key="GridCell.Tab.2.right/67.27.1853.1053@67.27.1853.1053" timestamp="1612618166009" />
+    <state x="655" y="280" key="SettingsEditor" timestamp="1612762167685">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state x="655" y="280" key="SettingsEditor/67.27.1853.1053@67.27.1853.1053" timestamp="1612762167685" />
+    <state width="463" height="527" key="XDebugger.FullValuePopup" timestamp="1612705985067">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state width="463" height="527" key="XDebugger.FullValuePopup/67.27.1853.1053@67.27.1853.1053" timestamp="1612705985067" />
+    <state x="167" y="125" width="1653" height="855" key="com.intellij.history.integration.ui.views.DirectoryHistoryDialog" timestamp="1612336729082">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state x="167" y="125" width="1653" height="855" key="com.intellij.history.integration.ui.views.DirectoryHistoryDialog/67.27.1853.1053@67.27.1853.1053" timestamp="1612336729082" />
+    <state x="753" y="160" width="470" height="784" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1612349652469">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state x="753" y="160" width="470" height="784" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/67.27.1853.1053@67.27.1853.1053" timestamp="1612349652469" />
+    <state x="582" y="269" width="803" height="566" key="com.intellij.openapi.vcs.changes.SpecificFilesViewDialog" timestamp="1612762917606">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state x="582" y="269" width="803" height="566" key="com.intellij.openapi.vcs.changes.SpecificFilesViewDialog/67.27.1853.1053@67.27.1853.1053" timestamp="1612762917606" />
+    <state x="520" y="213" width="937" height="678" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2" timestamp="1612597035601">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state x="520" y="213" width="937" height="678" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2/67.27.1853.1053@67.27.1853.1053" timestamp="1612597035601" />
+    <state x="-791" y="201" width="1799" height="1003" key="dock-window-1" timestamp="1612762077535">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state x="-791" y="201" width="1799" height="1003" key="dock-window-1/67.27.1853.1053@67.27.1853.1053" timestamp="1612762077535" />
+    <state x="683" y="293" width="991" height="626" key="find.popup" timestamp="1612752466698">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state x="683" y="293" width="991" height="626" key="find.popup/67.27.1853.1053@67.27.1853.1053" timestamp="1612752466698" />
+    <state x="889" y="266" width="187" height="573" key="ftp.server.browser" timestamp="1612272270243">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state x="889" y="266" width="187" height="573" key="ftp.server.browser/67.27.1853.1053@67.27.1853.1053" timestamp="1612272270243" />
+    <state x="656" y="257" width="672" height="678" key="search.everywhere.popup" timestamp="1612432650006">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state x="656" y="257" width="672" height="678" key="search.everywhere.popup/67.27.1853.1053@67.27.1853.1053" timestamp="1612432650006" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/detectron2/utils/visualizer.py</url>
+          <line>370</line>
+          <option name="timeStamp" value="27" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/detectron2/utils/visualizer.py</url>
+          <line>423</line>
+          <option name="timeStamp" value="28" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/detectron2/utils/visualizer.py</url>
+          <line>733</line>
+          <option name="timeStamp" value="43" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/detectron2/utils/colormap.py</url>
+          <line>119</line>
+          <option name="timeStamp" value="46" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/detectron2/utils/visualizer.py</url>
+          <line>749</line>
+          <option name="timeStamp" value="48" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/detectron2/utils/visualizer.py</url>
+          <line>683</line>
+          <option name="timeStamp" value="52" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/detectron2/utils/visualizer.py</url>
+          <line>720</line>
+          <option name="timeStamp" value="53" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/detectron2/utils/visualizer.py</url>
+          <line>859</line>
+          <option name="timeStamp" value="54" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/detectron2/utils/visualizer.py</url>
+          <line>372</line>
+          <option name="timeStamp" value="55" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/detectron2/utils/visualizer.py</url>
+          <line>120</line>
+          <option name="timeStamp" value="64" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/../anaconda3/envs/pytorch/lib/python3.6/site-packages/matplotlib/axes/_base.py</url>
+          <line>2052</line>
+          <option name="timeStamp" value="71" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/projects/MSBC-Net/visualize.py</url>
+          <line>107</line>
+          <option name="timeStamp" value="74" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/detectron2/utils/visualizer.py</url>
+          <line>288</line>
+          <option name="timeStamp" value="75" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/detectron2/utils/visualizer.py</url>
+          <line>297</line>
+          <option name="timeStamp" value="78" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/detectron2/utils/visualizer.py</url>
+          <line>298</line>
+          <option name="timeStamp" value="79" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/projects/MSBC-Net/train_rectal.py</url>
+          <line>114</line>
+          <option name="timeStamp" value="80" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/detectron2/utils/visualizer.py</url>
+          <line>537</line>
+          <option name="timeStamp" value="83" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/detectron2/utils/visualizer.py</url>
+          <line>681</line>
+          <option name="timeStamp" value="87" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/detectron2/utils/visualizer.py</url>
+          <line>1189</line>
+          <option name="timeStamp" value="88" />
+        </line-breakpoint>
+        <line-breakpoint type="python-line">
+          <url>file://$PROJECT_DIR$/detectron2/utils/visualizer.py</url>
+          <line>1095</line>
+          <option name="timeStamp" value="90" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/detectron2/utils/visualizer.py</url>
+          <line>1103</line>
+          <option name="timeStamp" value="91" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/../anaconda3/envs/pytorch/lib/python3.6/site-packages/matplotlib/axes/_base.py</url>
+          <line>2034</line>
+          <option name="timeStamp" value="92" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/detectron2/utils/visualizer.py</url>
+          <line>67</line>
+          <option name="timeStamp" value="111" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/projects/MSBC-Net/msbcnet/util/plot_utils.py</url>
+          <line>25</line>
+          <option name="timeStamp" value="154" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/MSBC_Net$7545.coverage" NAME="7545 Coverage Results" MODIFIED="1612518329627" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/projects/MSBC-Net" />
+    <SUITE FILE_PATH="coverage/MSBC_Net$visualizer.coverage" NAME="visualizer Coverage Results" MODIFIED="1612600747317" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/detectron2/utils" />
+    <SUITE FILE_PATH="coverage/MSBC_Net$plot_utils.coverage" NAME="plot_utils Coverage Results" MODIFIED="1612674864446" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/projects/MSBC-Net/msbcnet/util" />
+    <SUITE FILE_PATH="coverage/MSBC_Net$computeDice.coverage" NAME="computeDice Coverage Results" MODIFIED="1612707378458" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/projects/MSBC-Net/msbcnet/util" />
+    <SUITE FILE_PATH="coverage/MSBC_Net$visualize.coverage" NAME="visualize Coverage Results" MODIFIED="1612601218428" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/projects/MSBC-Net" />
+    <SUITE FILE_PATH="coverage/MSBC_Net$train_rectal.coverage" NAME="train_rectal Coverage Results" MODIFIED="1612754184551" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/projects/MSBC-Net" />
+  </component>
+</project>
