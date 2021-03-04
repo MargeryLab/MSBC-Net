@@ -1,6 +1,6 @@
 MODEL:
   META_ARCHITECTURE: "MSBCNet"
-  WEIGHTS: "detectron2://ImageNetPretrained/torchvision/R-50.pkl"
+  WEIGHTS: "detectron2://ImageNetPretrained/MSRA/R-50.pkl"
 #  PIXEL_MEAN: [123.675, 116.280, 103.530]
 #  PIXEL_STD: [58.395, 57.120, 57.375]
   PIXEL_MEAN: [51.01679864,51.01679864,51.01679864]
@@ -8,6 +8,8 @@ MODEL:
   BACKBONE:
     NAME: "build_resnet_fpn_backbone"
   RESNETS:
+#    DEFORM_ON_PER_STAGE: [False, True, True, True]
+#    DEFORM_MODULATED: False
     OUT_FEATURES: ["res2", "res3", "res4", "res5"]
   FPN:
     IN_FEATURES: ["res2", "res3", "res4", "res5"]
@@ -20,7 +22,7 @@ MODEL:
   ROI_MASK_HEAD:
     NAME: "BoundaryMaskHead"
     NUM_CONV: 2
-    POOLER_RESOLUTION: 14
+    POOLER_RESOLUTION: 28
   BOUNDARY_MASK_HEAD:
     POOLER_RESOLUTION: 28
     IN_FEATURES: ["p2"]

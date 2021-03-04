@@ -1,6 +1,8 @@
 _BASE_: "Base-MSBC-Net.yaml"
 MODEL:
-  WEIGHTS: "detectron2://ImageNetPretrained/torchvision/R-50.pkl"
+  WEIGHTS: "detectron2://ImageNetPretrained/MSRA/R-50.pkl"
+  MASK_ON: True
+  BOUNDARY_ON: True
   RESNETS:
     DEPTH: 50
     STRIDE_IN_1X1: False
@@ -8,12 +10,14 @@ MODEL:
     NUM_PROPOSALS: 300
     NUM_CLASSES: 2
 DATASETS:
-  TRAIN: ("coco_2017_train",)
-  TEST:  ("coco_2017_val",)
+#  TRAIN: ("coco_2017_train",)
+#  TEST:  ("coco_2017_val",)
+  TRAIN: ("rectal_tumor_train",)
+  TEST:  ("rectal_tumor_val",)
 SOLVER:
   STEPS: (210000, 250000)
   MAX_ITER: 270000
 INPUT:
   CROP:
-    ENABLED: True
+    ENABLED: False
   FORMAT: "RGB"
