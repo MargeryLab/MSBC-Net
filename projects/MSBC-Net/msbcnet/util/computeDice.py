@@ -13,7 +13,6 @@ def computeDice():
     print('tumorDiceMean = {}'.format(np.mean(tumorDice)))
     print('rectalWallDiceMean = {}'.format(np.mean(rectalWallDice)))
     print('TotalDiceMean = {}'.format(np.mean(TotalDice)))
-    # return TotalDice
 
 
 if __name__ == '__main__':

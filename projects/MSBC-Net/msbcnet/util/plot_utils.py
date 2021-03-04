@@ -105,3 +105,8 @@ def plot_precision_recall(files, naming_scheme='iter'):
     axs[1].set_title('Scores / Recall')
     axs[1].legend(names)
     return fig, axs
+
+
+if __name__ == '__main__':
+    # plot_logs(['/media/margery/b44160de-00cb-402a-ba45-d81240edf8a4/DeepLearningDemo/MSBC-Net/projects/MSBC-Net/output/log.txt'])
+    plot_precision_recall('/media/margery/b44160de-00cb-402a-ba45-d81240edf8a4/DeepLearningDemo/MSBC-Net/projects/MSBC-Net/output/log.txt')

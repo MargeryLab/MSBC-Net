@@ -7,3 +7,4 @@ from .config import add_msbcnet_config
 from .mask_head import BoundaryMaskHead
 from .detector import MSBCNet
 from .dataset_mapper import MSBCNetDatasetMapper
+

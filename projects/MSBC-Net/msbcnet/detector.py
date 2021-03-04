@@ -3,8 +3,6 @@
 # Contact: {sunpeize, cxrfzhang}@foxmail.com
 #
 # Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved
-import logging
-import math
 import os, csv
 from typing import List
 
@@ -12,17 +10,11 @@ import cv2
 import numpy as np
 import pandas as pd
 import torch
-import torch.distributed as dist
 import torch.nn.functional as F
 from torch import nn
 
-from detectron2.layers import ShapeSpec
 from detectron2.modeling import META_ARCH_REGISTRY, build_backbone, detector_postprocess
-from detectron2.modeling.roi_heads import build_roi_heads
-
 from detectron2.structures import Boxes, ImageList, Instances
-from detectron2.utils.logger import log_first_n
-from fvcore.nn import giou_loss, smooth_l1_loss
 
 from .loss import SetCriterion, HungarianMatcher
 from .head import DynamicHead
@@ -106,10 +98,42 @@ class MSBCNet(nn.Module):
         self.normalizer = lambda x: (x - pixel_mean) / pixel_std
         self.to(self.device)
 
+    def adjust_box(self, box_t):
+        if box_t.data[0][2] - box_t.data[0][0] < 0:
+            box2 = box_t.data[0][2].clone()
+            box_t.data[0][2] = box_t.data[0][0]
+            box_t.data[0][0] = box2
+        if box_t.data[0][3] - box_t.data[0][1] < 0:
+            box3 = box_t.data[0][3].clone()
+            box_t.data[0][3] = box_t.data[0][1]
+            box_t.data[0][1] = box3
+        return box_t
+
+    def prepare_proposals(self, images_whwh):
+        result = []
+        res_100 = []
+        proposal_boxes = self.init_proposal_boxes.weight.clone()  # （100,4）
+        proposal_boxes = box_cxcywh_to_xyxy(proposal_boxes)
+        proposal_boxes = proposal_boxes[None] % 1 * (
+        images_whwh[:, None, :])  # torch.Size([16, 100, 4])乘以imge_size whwh[352,352,352,352]
+        for i in range(proposal_boxes.shape[0]):
+            res_100.clear()
+            # threshold = [0, images_whwh[0].cpu().numpy()[0]]
+            for j in range(proposal_boxes[i].shape[0]):
+                box = proposal_boxes[i][j].reshape(1, 4)
+                # _,box = self.init_one_box(box, threshold,images_whwh)
+                box = self.adjust_box(box)
+                res_100.append(box)
+            res = torch.cat(res_100, dim=0).reshape(self.num_proposals, 4)
+            result.append(res)
+
+        result = torch.cat(tuple(result), dim=0).reshape(len(images_whwh), self.num_proposals, 4)
+        return result
+
     def postprogress(self, results, batched_inputs, image_sizes):
         processed_results = []
-        tumor_mask_root = '/media/margery/4ABB9B07DF30B9DB/pythonDemo/tools/prepare_detection_dataset/test_tumor_whole'
-        wall_mask_root = '/media/margery/4ABB9B07DF30B9DB/pythonDemo/tools/prepare_detection_dataset/test_wall_whole'
+        tumor_mask_root = './test_tumor_whole'
+        wall_mask_root = './test_wall_whole'
         pred_tumor_path = './predictionTumor'
         pred_wall_path = './predictionWall'
         if not os.path.exists(pred_tumor_path):
@@ -135,27 +159,45 @@ class MSBCNet(nn.Module):
                 if img_name in pd.read_csv(dice_path, usecols=['SubjectID']):
                     readstyle = "w+"
 
-                if r.pred_classes.shape == torch.Size([0]):
-                    # print(img_name)
+                if r.pred_classes.shape == torch.Size([0]) and \
+                        (np.max(cv2.imread(os.path.join(tumor_mask_root, img_name), flags=0)) == 0) and \
+                        (np.max(cv2.imread(os.path.join(tumor_mask_root, img_name), flags=0)) == 0): #没有检测出目标
                     with open(dice_path, readstyle, newline='') as file:
                         csv_file = csv.writer(file)
-                        datas = [img_name, 0., 0., 0.]
+                        datas = [img_name, 1., 1., 1.]
                         csv_file.writerow(datas)
                     continue
-                pred_sum = np.zeros((r.pred_masks.shape[1], r.pred_masks.shape[2]),dtype=np.int32)
-                if r.pred_classes.min().cpu().numpy() == 0 and (    #兩個累唄都有
+                elif r.pred_classes.shape == torch.Size([0]) and \
+                        (np.max(cv2.imread(os.path.join(tumor_mask_root, img_name), flags=0)) == 0) and \
+                        (np.max(cv2.imread(os.path.join(tumor_mask_root, img_name), flags=0)) != 0):
+                    with open(dice_path, readstyle, newline='') as file:
+                        csv_file = csv.writer(file)
+                        datas = [img_name, 1., 0, 0.5]
+                        csv_file.writerow(datas)
+                    continue
+                elif r.pred_classes.shape == torch.Size([0]) and \
+                        (np.max(cv2.imread(os.path.join(tumor_mask_root, img_name), flags=0)) != 0) and \
+                        (np.max(cv2.imread(os.path.join(tumor_mask_root, img_name), flags=0)) == 0):
+                    with open(dice_path, readstyle, newline='') as file:
+                        csv_file = csv.writer(file)
+                        datas = [img_name, 0, 1., 0.5]
+                        csv_file.writerow(datas)
+                    continue
+
+                if r.pred_classes.min().cpu().numpy() == 0 and (    #兩個类都有
                         r.pred_classes.max().cpu().numpy() == self.num_classes - 1):
                     for i in range(self.num_classes):
+                        pred_sum = np.zeros((r.pred_masks.shape[1], r.pred_masks.shape[2]), dtype=np.int32)
                         pred_classes = r.pred_classes
                         index = (pred_classes == i).nonzero()
                         index = index.reshape(len(index))
                         scores, idx = r.scores[index].sort(descending=True)
                         pred_masks = r.pred_masks[index][idx]  # （7，310，420）
                         if i == 0:
-                            for i in range(pred_masks.shape[0]):
-                                pred_sum += pred_masks[i].int().cpu().numpy()
+                            for j in range(pred_masks.shape[0]):
+                                pred_sum += pred_masks[j].int().cpu().numpy()
                             pred_sum[pred_sum >= 2] = 1
-                            assert pred_sum.max() == 1
+                            assert pred_sum.max() <= 1
                             pred = (pred_sum * 255).astype(np.uint8)
                             cv2.imwrite(os.path.join(pred_tumor_path, img_name),pred)
                             pred_tumor_masks.append(torch.tensor(pred_sum,dtype=torch.float32,device='cuda'))
@@ -163,10 +205,10 @@ class MSBCNet(nn.Module):
                             mask_arr = cv2.imread(mask_path, flags=0)  # （320,410）
                             gt_tumor_masks.append(torch.from_numpy(mask_arr/255.).type(torch.float32).cuda())
                         else:
-                            for i in range(pred_masks.shape[0]):
-                                pred_sum += pred_masks[i].int().cpu().numpy()
+                            for j in range(pred_masks.shape[0]):
+                                pred_sum += pred_masks[j].int().cpu().numpy()
                             pred_sum[pred_sum >= 2] = 1
-                            assert pred_sum.max() == 1
+                            assert pred_sum.max() <= 1
                             pred = (pred_sum * 255).astype(np.uint8)
                             cv2.imwrite(os.path.join(pred_wall_path, img_name),pred)
                             pred_wall_masks.append(torch.tensor(pred_sum,dtype=torch.float32,device='cuda'))
@@ -176,6 +218,7 @@ class MSBCNet(nn.Module):
                 else:
                     scores, idx = r.scores.sort(descending=True)
                     pred_masks = r.pred_masks[idx]  # （7，310，4）
+                    pred_sum = np.zeros((r.pred_masks.shape[1], r.pred_masks.shape[2]), dtype=np.int32)
                     if r.pred_classes.max().item() == 0:
                         for i in range(pred_masks.shape[0]):
                             pred_sum += pred_masks[i].int().cpu().numpy()
@@ -235,7 +278,6 @@ class MSBCNet(nn.Module):
                 * "height", "width" (int): the output resolution of the model, used in inference.
                   See :meth:`postprocess` for details.
         """
-        output = {}
         images, images_whwh = self.preprocess_image(batched_inputs)
         if isinstance(images, (list, torch.Tensor)):
             images = nested_tensor_from_tensor_list(images)
@@ -244,9 +286,11 @@ class MSBCNet(nn.Module):
         src = self.backbone(images.tensor)
 
         # Prepare Proposals.
-        proposal_boxes = self.init_proposal_boxes.weight.clone()
-        proposal_boxes = box_cxcywh_to_xyxy(proposal_boxes)
-        proposal_boxes = proposal_boxes[None] * images_whwh[:, None, :]
+        # proposal_boxes = self.init_proposal_boxes.weight.clone()
+        # proposal_boxes = box_cxcywh_to_xyxy(proposal_boxes)
+        # proposal_boxes = proposal_boxes[None] * images_whwh[:, None, :]
+
+        proposal_boxes = self.prepare_proposals(images_whwh)
 
         # Prediction.
         if self.training:

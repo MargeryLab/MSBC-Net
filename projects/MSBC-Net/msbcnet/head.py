@@ -21,7 +21,8 @@ from detectron2.modeling.matcher import Matcher
 from detectron2.structures import Boxes, Instances, pairwise_iou, PolygonMasks
 from detectron2.modeling.poolers import ROIPooler
 from detectron2.modeling.roi_heads.mask_head import build_mask_head
-from detectron2.layers import ShapeSpec
+
+from .deform_attention import MSDeformAttn
 
 _DEFAULT_SCALE_CLAMP = math.log(100000.0 / 16)
 
@@ -385,6 +386,7 @@ class RCNNHead(nn.Module):
 
         # dynamic.
         self.self_attn = nn.MultiheadAttention(d_model, nhead, dropout=dropout)
+        # self.self_attn = MSDeformAttn(d_model, 1, nhead, n_points=4)
         self.inst_interact = DynamicConv(cfg)
 
         self.linear1 = nn.Linear(d_model, dim_feedforward)
@@ -431,8 +433,8 @@ class RCNNHead(nn.Module):
         self.box_pool_resolution = cfg.MODEL.ROI_BOX_HEAD.POOLER_RESOLUTION
         self.mask_pool_resolution = cfg.MODEL.ROI_MASK_HEAD.POOLER_RESOLUTION
         self.boundary_pool_resolution = cfg.MODEL.BOUNDARY_MASK_HEAD.POOLER_RESOLUTION
-        self.mask_head = build_mask_head(cfg, ShapeSpec(channels=256, width=self.mask_pool_resolution,
-                                                        height=self.mask_pool_resolution))
+        self.mask_head = build_mask_head(cfg)
+
     def _sample_proposals(
             self, matched_idxs: torch.Tensor, matched_labels: torch.Tensor, gt_classes: torch.Tensor
     ) -> Tuple[torch.Tensor, torch.Tensor]:
@@ -544,6 +546,21 @@ class RCNNHead(nn.Module):
         probs = torch.sigmoid(scores)
         return probs.split(num_inst_per_image, dim=0)
 
+    @staticmethod
+    def get_reference_points(spatial_shapes, device):
+        reference_points_list = []
+        for lvl, (H_, W_) in enumerate(spatial_shapes):
+
+            ref_y, ref_x = torch.meshgrid(torch.linspace(0.5, H_ - 0.5, H_, dtype=torch.float32, device=device),
+                                          torch.linspace(0.5, W_ - 0.5, W_, dtype=torch.float32, device=device))
+            ref_y = ref_y.reshape(-1)[None] / H_
+            ref_x = ref_x.reshape(-1)[None] / W_
+            ref = torch.stack((ref_x, ref_y), -1)
+            reference_points_list.append(ref)
+        reference_points = torch.cat(reference_points_list, 1)
+        reference_points = reference_points[:, :, None]
+        return reference_points
+
     def forward(self, src, bboxes, pro_features, proposals_ins, box_pooler, mask_pooler, boundary_pooler, gt_instances):
         """
         :param bboxes: (N, nr_boxes, 4)
@@ -561,7 +578,20 @@ class RCNNHead(nn.Module):
         roi_features = box_pooler(box_features, proposal_boxes)
         roi_features = roi_features.view(N * nr_boxes, self.d_model, -1).permute(2, 0, 1)
 
-        # self_att.
+        # self_att.(1,1200,256)
+        # pro_features = pro_features.view(N, nr_boxes, self.d_model)
+        # spatial_shapes = []
+        # if pro_features.shape[1] == 100:
+        #     spatial_shapes.append((10, 10))
+        # else:
+        #     spatial_shapes.append((20, 15))
+        # spatial_shapes = torch.as_tensor(spatial_shapes, dtype=torch.long, device='cuda')
+        # level_start_index = torch.tensor([0], device='cuda')
+        # reference_points = self.get_reference_points(spatial_shapes, device='cuda')
+        # pro_features2 = self.self_attn(pro_features, reference_points, pro_features, spatial_shapes, level_start_index).permute(1,0,2)
+        # pro_features = pro_features.permute(1,0,2) + self.dropout1(pro_features2)
+        # pro_features = self.norm1(pro_features)
+
         pro_features = pro_features.view(N, nr_boxes, self.d_model).permute(1, 0, 2)
         pro_features2 = self.self_attn(pro_features, pro_features, value=pro_features)[0]
         pro_features = pro_features + self.dropout1(pro_features2)
@@ -622,6 +652,11 @@ class RCNNHead(nn.Module):
                                                                                        scores):
                     filter_mask = scores_per_image > self.score_thresh
                     filter_inds = filter_mask.nonzero()
+                    filter_inds_tmp = torch.zeros(2,2).cuda()
+                    if filter_inds.shape[0] == 0:
+                        filter_inds_tmp = filter_inds
+                        filter_mask = scores_per_image > 0.001
+                        filter_inds = filter_mask.nonzero()
                     scores_i = scores_per_image[filter_mask]
                     pred_boxes_per_img = pred_boxes_per_image[filter_inds[:, 0]]
                     per_ins = Instances(proposals_per_image.image_size)
@@ -630,6 +665,12 @@ class RCNNHead(nn.Module):
                     per_ins.pred_boxes = Boxes(pred_boxes_per_img)
                     pred_ins.append(per_ins)
                     predi_bboxes.append(Boxes(pred_boxes_per_img))
+
+                    if filter_inds_tmp.shape[0] == 0:
+                        for i in range(len(pred_ins)):
+                            x = torch.zeros(pred_ins[i].pred_classes.shape[0], 1, 28, 28).cuda()
+                            pred_ins[i].pred_masks = x
+                        return pred_ins, pred_bboxes, obj_features
 
                 roi_mask_features = mask_pooler(mask_features, predi_bboxes)
                 roi_boundary_features = boundary_pooler(boundary_features, predi_bboxes)

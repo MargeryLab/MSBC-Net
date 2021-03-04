@@ -1,9 +1,12 @@
 # Copyright (c) wondervictor. All Rights Reserved
+import os
 from typing import List
 
 import cv2
 import fvcore.nn.weight_init as weight_init
+import imageio
 import torch
+from mmcv.ops import ModulatedDeformConv2dPack
 from torch import nn
 from torch.nn import functional as F
 
@@ -14,6 +17,80 @@ from detectron2.utils.events import get_event_storage
 from detectron2.modeling.roi_heads import ROI_MASK_HEAD_REGISTRY
 from detectron2.modeling.roi_heads.mask_head import mask_rcnn_inference
 
+
+class DoubleConv(nn.Module):
+    """(convolution => [BN] => ReLU) * 2"""
+
+    def __init__(self, in_channels, out_channels, mid_channels=None):
+        super().__init__()
+        if not mid_channels:
+            mid_channels = out_channels
+        self.double_conv = nn.Sequential(
+            # nn.Conv2d(in_channels, mid_channels, kernel_size=3, padding=1),
+            ModulatedDeformConv2dPack(in_channels, mid_channels, kernel_size=3, padding=1, stride=1, groups=1, bias=False),
+            nn.BatchNorm2d(mid_channels),
+            nn.ReLU(inplace=True),
+            # nn.Conv2d(mid_channels, out_channels, kernel_size=3, padding=1),
+            ModulatedDeformConv2dPack(mid_channels, out_channels, kernel_size=3, padding=1, stride=1, groups=1, bias=False),
+            nn.BatchNorm2d(out_channels),
+            nn.ReLU(inplace=True)
+        )
+
+    def forward(self, x):
+        return self.double_conv(x)
+
+
+class Down(nn.Module):
+    """Downscaling with maxpool then double conv"""
+
+    def __init__(self, in_channels, out_channels):
+        super().__init__()
+        self.maxpool_conv = nn.Sequential(
+            nn.MaxPool2d(2),
+            DoubleConv(in_channels, out_channels)
+        )
+
+    def forward(self, x):
+        return self.maxpool_conv(x)
+
+
+class Up(nn.Module):
+    """Upscaling then double conv"""
+
+    def __init__(self, in_channels, out_channels, bilinear=True):
+        super().__init__()
+
+        # if bilinear, use the normal convolutions to reduce the number of channels
+        if bilinear:
+            self.up = nn.Upsample(scale_factor=2, mode='bilinear', align_corners=True)
+            self.conv = DoubleConv(in_channels, out_channels, in_channels // 2)
+        else:
+            self.up = nn.ConvTranspose2d(in_channels , in_channels // 2, kernel_size=2, stride=2)
+            self.conv = DoubleConv(in_channels, out_channels)
+
+
+    def forward(self, x1, x2):
+        x1 = self.up(x1)
+        # input is CHW
+        diffY = x2.size()[2] - x1.size()[2]
+        diffX = x2.size()[3] - x1.size()[3]
+
+        x1 = F.pad(x1, [diffX // 2, diffX - diffX // 2,
+                        diffY // 2, diffY - diffY // 2])
+        # if you have padding issues, see
+        # https://github.com/HaiyongJiang/U-Net-Pytorch-Unstructured-Buggy/commit/0e854509c2cea854e247a9c615f175f76fbb2e3a
+        # https://github.com/xiaopeng-liao/Pytorch-UNet/commit/8ebac70e633bac59fc22bb5195e513d5832fb3bd
+        x = torch.cat([x2, x1], dim=1)#（16,1536,14,14）
+        return self.conv(x)
+
+
+class OutConv(nn.Module):
+    def __init__(self, in_channels, out_channels):
+        super(OutConv, self).__init__()
+        self.conv = nn.Conv2d(in_channels, out_channels, kernel_size=1)
+
+    def forward(self, x):
+        return self.conv(x)
 
 def dice_loss_func(input, target):
     smooth = 1e-8
@@ -62,6 +139,19 @@ def boundary_loss_func(boundary_logits, gtmasks):
     dice_loss = dice_loss_func(torch.sigmoid(boundary_logits), boundary_targets)
     return bce_loss + dice_loss
 
+class BasicConv2d(nn.Module):
+    def __init__(self, in_planes, out_planes, kernel_size, stride=1, padding=0, dilation=1):
+        super(BasicConv2d, self).__init__()
+        self.conv = nn.Conv2d(in_planes, out_planes,
+                              kernel_size=kernel_size, stride=stride,
+                              padding=padding, dilation=dilation, bias=False)
+        self.bn = nn.BatchNorm2d(out_planes)
+        self.relu = nn.ReLU(inplace=True)
+
+    def forward(self, x):
+        x = self.conv(x)
+        x = self.bn(x)
+        return x
 
 def boundary_preserving_mask_loss(
                                   pred_mask_logits,
@@ -162,68 +252,45 @@ def boundary_preserving_mask_loss(
 @ROI_MASK_HEAD_REGISTRY.register()
 class BoundaryMaskHead(nn.Module):
 
-    def __init__(self, cfg, input_shape: ShapeSpec):
+    def __init__(self, cfg, bilinear=False):
         super(BoundaryMaskHead, self).__init__()
+        self.n_channels = 256
+        num_classes = cfg.MODEL.MSBCNet.NUM_CLASSES
+        self.bilinear = bilinear
 
         conv_dim = cfg.MODEL.ROI_MASK_HEAD.CONV_DIM
-        num_conv = cfg.MODEL.ROI_MASK_HEAD.NUM_CONV
         conv_norm = cfg.MODEL.ROI_MASK_HEAD.NORM
-        num_boundary_conv = cfg.MODEL.BOUNDARY_MASK_HEAD.NUM_CONV
-        num_classes = cfg.MODEL.ROI_HEADS.NUM_CLASSES
-        if cfg.MODEL.ROI_MASK_HEAD.CLS_AGNOSTIC_MASK:
-            num_classes = 1
 
-        self.mask_fcns = []
-        cur_channels = input_shape.channels
-        for k in range(num_conv):
-            conv = Conv2d(
-                cur_channels,
-                conv_dim,
-                kernel_size=3,
-                stride=1,
-                padding=1,
-                bias=not conv_norm,
-                norm=get_norm(conv_norm, conv_dim),
-                activation=F.relu,
-            )
-            self.add_module("mask_fcn{}".format(k + 1), conv)
-            self.mask_fcns.append(conv)
-            cur_channels = conv_dim
+        self.inc = DoubleConv(self.n_channels, 256)
+        self.down1 = Down(256, 512)
+        factor = 2 if bilinear else 1
+        self.down2 = Down(512, 1024 // factor)
+        self.up1 = Up(1024, 512 // factor, bilinear)
+        self.up2 = Up(512, 256 // factor, bilinear)
+        self.outc = OutConv(256, num_classes)
 
-        self.mask_final_fusion = Conv2d(
-            conv_dim, conv_dim,
-            kernel_size=3,
-            padding=1,
-            stride=1,
-            bias=not conv_norm,
-            norm=get_norm(conv_norm, conv_dim),
-            activation=F.relu)
+        self.bfc1 = BasicConv2d(256, 512, kernel_size=1, padding=0)
+        self.bfc2 = BasicConv2d(512, 1024, kernel_size=1, padding=0)
 
-        self.downsample = Conv2d(
-            conv_dim, conv_dim,
+        self.boundary_to_mask1 = Conv2d(
+            256, 512,
             kernel_size=3,
             padding=1,
             stride=2,
             bias=not conv_norm,
-            norm=get_norm(conv_norm, conv_dim),
+            norm=get_norm(conv_norm, 512),
             activation=F.relu
         )
-        self.boundary_fcns = []
-        cur_channels = input_shape.channels
-        for k in range(num_boundary_conv):
-            conv = Conv2d(
-                cur_channels,
-                conv_dim,
-                kernel_size=3,
-                stride=1,
-                padding=1,
-                bias=not conv_norm,
-                norm=get_norm(conv_norm, conv_dim),
-                activation=F.relu,
-            )
-            self.add_module("boundary_fcn{}".format(k + 1), conv)
-            self.boundary_fcns.append(conv)
-            cur_channels = conv_dim
+
+        self.boundary_to_mask2 = Conv2d(
+            512, 1024,
+            kernel_size=3,
+            padding=1,
+            stride=2,
+            bias=not conv_norm,
+            norm=get_norm(conv_norm, 1024),
+            activation=F.relu
+        )
 
         self.mask_to_boundary = Conv2d(
             conv_dim, conv_dim,
@@ -235,56 +302,49 @@ class BoundaryMaskHead(nn.Module):
             activation=F.relu
         )
 
-        self.boundary_to_mask = Conv2d(
-            conv_dim, conv_dim,
+        self.bft1 = nn.Sequential(
+            nn.Upsample(scale_factor=2, mode='bilinear', align_corners=True),
+            Conv2d(
+            512, 256,
             kernel_size=1,
             padding=0,
             stride=1,
             bias=not conv_norm,
-            norm=get_norm(conv_norm, conv_dim),
+            norm=get_norm(conv_norm, 256),
             activation=F.relu
         )
+        )
+
+        cur_channels = 256
 
         self.mask_deconv = ConvTranspose2d(
             conv_dim, conv_dim, kernel_size=2, stride=2, padding=0
         )
-        self.mask_predictor = Conv2d(cur_channels, num_classes, kernel_size=1, stride=1, padding=0)
 
         self.boundary_deconv = ConvTranspose2d(
-            conv_dim, conv_dim, kernel_size=2, stride=2, padding=0
+            512, conv_dim, kernel_size=2, stride=2, padding=0
         )
         self.boundary_predictor = Conv2d(cur_channels, num_classes, kernel_size=1, stride=1, padding=0)
 
-        for layer in self.mask_fcns + self.boundary_fcns +\
-                     [self.mask_deconv, self.boundary_deconv, self.boundary_to_mask, self.mask_to_boundary,
-                      self.mask_final_fusion, self.downsample]:
-            weight_init.c2_msra_fill(layer)
-        # use normal distribution initialization for mask prediction layer
-        nn.init.normal_(self.mask_predictor.weight, std=0.001)
-        nn.init.normal_(self.boundary_predictor.weight, std=0.001)
-        if self.mask_predictor.bias is not None:
-            nn.init.constant_(self.mask_predictor.bias, 0)
-        if self.boundary_predictor.bias is not None:
-            nn.init.constant_(self.boundary_predictor.bias, 0)
+    def forward(self, mask_features, boundary_features, instances):    #（27,256,28,28）,（27,256,28,28）
 
-    def forward(self, mask_features, boundary_features, instances: List[Instances]):
-        for layer in self.mask_fcns:
-            mask_features = layer(mask_features)
-        # downsample
-        boundary_features = self.downsample(boundary_features)
-        # mask to boundary fusion
-        boundary_features = boundary_features + self.mask_to_boundary(mask_features)
-        for layer in self.boundary_fcns:
-            boundary_features = layer(boundary_features)
-        # boundary to mask fusion
-        mask_features = self.boundary_to_mask(boundary_features) + mask_features
-        mask_features = self.mask_final_fusion(mask_features)
-        # mask prediction
-        mask_features = F.interpolate(mask_features, scale_factor=2, mode='bilinear')
-        mask_logits = self.mask_predictor(mask_features)
-        # boundary prediction
-        boundary_features = F.interpolate(boundary_features, scale_factor=2, mode='bilinear')
-        boundary_logits = self.boundary_predictor(boundary_features)
+        x1 = self.inc(mask_features)    #（27,256,28,28）
+        boundary_features = boundary_features + self.mask_to_boundary(x1)   #27,256,28,28
+        boundary_features = self.inc(boundary_features) #27,256,28,28
+
+        x2 = self.down1(x1) #（27，512，14，14)
+        # x2 = F.interpolate(self.boundary_to_mask1(boundary_features),scale_factor=1/2, mode='bilinear', align_corners=True) + x2 #插值合适还是下采样卷积合适
+        boundary_features_tmp = self.boundary_to_mask1(boundary_features) #27,512,14,14
+        x2 = boundary_features_tmp + x2  #27,512,14,14
+        x3 = self.down2(x2) #(27,1024,7,7）
+        x3 = self.boundary_to_mask2(boundary_features_tmp) + x3 #27,1024,7,7
+
+        x = self.up1(x3, x2)    #（27,512,14,14）
+        x = self.up2(x, x1) #（27,256,28,28）
+        mask_logits = self.outc(x)  #（27,2,28,28）
+
+        boundary_logits = self.outc(boundary_features)
+
         if self.training:
             loss_mask, loss_boundary = boundary_preserving_mask_loss(
                 mask_logits, boundary_logits, instances)
